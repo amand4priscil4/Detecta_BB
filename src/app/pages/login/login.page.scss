@@ -1,0 +1,143 @@
+.cadastro-content {
+  --background: #ffffff;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+.titulo-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  margin-top: 40px;
+}
+
+.titulo {
+  font-family: "Baloo 2", cursive;
+  font-size: 45px;
+  color: #fcfc30;
+  margin: 0;
+}
+
+.titulo-imagem {
+  width: auto;
+  height: auto;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 110px;
+}
+
+ion-label {
+  font-size: 15px;
+  font-family: "Baloo 2", sans-serif;
+}
+
+.link-login {
+  text-align: center;
+  font-size: 14px;
+  color: #465efc;
+
+  font-family: "Baloo 2", sans-serif;
+}
+
+.link-login a {
+  color: #465efc;
+  text-decoration: none;
+}
+
+.input-label-azul {
+  color: #465efc;
+  font-size: 23px;
+}
+
+ion-item {
+  --background: transparent;
+  --highlight-color-focused: transparent;
+  --border-color: transparent;
+  background: transparent !important;
+  box-shadow: none;
+}
+
+ion-label {
+  line-height: 24px;
+}
+
+.svg-top-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 250px;
+  z-index: -1;
+  pointer-events: none;
+  image-rendering: optimizeQuality;
+  shape-rendering: geometricPrecision;
+}
+
+ion-input {
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+  background: rgba(217, 217, 217, 0.7);
+  box-shadow: 0px 4px 13.5px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  color: rgba(0, 0, 0, 0.5);
+  --padding-start: 10px;
+}
+.und {
+  text-decoration: underline !important;
+  color: #465efc;
+}
+
+
+.link-forgot-password, .link-sign-in{
+  text-align: center;
+  font-size: 16px;
+  color: #465efc;
+}
+
+.botao-fixo {
+  border-radius: 20px;
+}
+
+.login-button {
+  font-weight: bold;
+  height: 45px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+ion-button {
+      --background: #465EFF;
+      --background-hover: #1565c0;
+      --border-radius: 20px;
+      --box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+      --color: white;
+      font-size: 16px;
+      text-transform: none;
+    }
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.formulario,
+.link-forgot-password {
+  margin-bottom: 20px;
+}
+
+.footer {
+  margin-top: auto;
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+.login-button {
+  margin: 0 16px;
+}

@@ -1,0 +1,29 @@
+<ion-content *ngIf="carregando">
+  <ion-spinner name="crescent" style="margin-top: 50%; display: block;" color="primary"></ion-spinner>
+</ion-content>
+
+<ion-content class="home-page" fullscreen *ngIf="!carregando">
+  <div class="profile-button-container">
+    <ion-button fill="clear" class="profile-button-standalone">
+      <ion-avatar class="profile-avatar-standalone">
+        <img src="assets/icon/perfil.png" alt="Foto de perfil" />
+      </ion-avatar>
+    </ion-button>
+  </div>
+
+  <div class="top-wave"></div>
+
+  <div class="greeting">
+    <h2>Olá, {{ nome }}!</h2>
+    <p>Que bom você por aqui!</p>
+  </div>
+
+  <div class="validate-section">
+    <p class="validate-text">Vamos validar seu boleto hoje?</p>
+    <ion-button expand="block" class="validate-button" (click)="irParaUpload()">
+      CLIQUE AQUI!
+    </ion-button>
+  </div>
+
+  <img class="bottom-logo" src="assets/icon/logo.png" alt="Logo BB" />
+</ion-content>

@@ -1,0 +1,31 @@
+<ion-content class="upload-page">
+  <div class="top-section">
+    <img src="assets/icon/camera.png" class="upload-icon" alt="upload" />
+    <p class="upload-text">Faça o upload do seu boleto aqui!</p>
+  </div>
+
+  <div class="camera-button-wrapper">
+    <ion-button expand="block" class="camera-button" (click)="usarCamera()">
+      <ion-icon slot="start" name="camera-outline"></ion-icon>
+      USE SUA CÂMERA
+    </ion-button>
+  </div>
+
+  <div class="bottom-section" (click)="abrirGaleria()">
+    <div class="divider">ou</div>
+    <div class="gallery-upload">
+      <ion-icon name="image-outline"></ion-icon>
+      <p>
+        Selecione o arquivo da sua galeria<br /><small>PDF, JPEG, JPG ou PNG</small>
+      </p>
+    </div>
+  </div>
+
+  <input
+    type="file"
+    accept=".png, .jpg, .jpeg, .pdf,application/pdf"
+    #fileInput
+    style="display: none"
+    (change)="arquivoSelecionado($event)"
+  />
+</ion-content>

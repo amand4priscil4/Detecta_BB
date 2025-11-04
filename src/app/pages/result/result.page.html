@@ -1,0 +1,173 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home-page"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Resultado da Análise</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  
+  <!-- Loading -->
+  <div *ngIf="carregando" class="loading-container">
+    <ion-spinner name="circles"></ion-spinner>
+    <p>Processando resultado...</p>
+  </div>
+
+  <!-- Resultado -->
+  <div *ngIf="!carregando && explicacaoSimples">
+
+    <!-- Card Principal: Status -->
+    <ion-card [color]="explicacaoSimples.status === 'FRAUDULENTO' ? 'danger' : 'success'">
+      <ion-card-header>
+        <div class="status-header">
+          <span class="emoji-grande">{{explicacaoSimples.emoji}}</span>
+          <div>
+            <ion-card-title>{{explicacaoSimples.status}}</ion-card-title>
+            <ion-card-subtitle style="color: white;">
+              Confiança: {{explicacaoSimples.confianca}}
+            </ion-card-subtitle>
+          </div>
+        </div>
+      </ion-card-header>
+      <ion-card-content>
+        <p class="resumo">{{explicacaoSimples.resumo}}</p>
+        <p class="motivo"><strong>Motivo principal:</strong> {{explicacaoSimples.principal_motivo}}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Card: Recomendação -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          {{recomendacao.emoji}} Recomendação
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-badge [color]="recomendacao.cor" class="badge-acao">
+          {{recomendacao.acao_principal}}
+        </ion-badge>
+        <p class="mensagem-recomendacao">{{recomendacao.mensagem}}</p>
+        
+        <div class="proximos-passos">
+          <h4>Próximos passos:</h4>
+          <ion-list>
+            <ion-item *ngFor="let passo of recomendacao.proximos_passos" lines="none">
+              <ion-icon name="checkmark-circle" slot="start" color="primary"></ion-icon>
+              <ion-label class="ion-text-wrap">{{passo}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Card: Razões (se houver) -->
+    <ion-card *ngIf="razoes && razoes.length > 0">
+      <ion-card-header>
+        <ion-card-title>Por que detectamos isso?</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let razao of razoes" lines="full">
+            <ion-icon [name]="getIconeGravidade(razao.gravidade)" slot="start" 
+                      [color]="getCorGravidade(razao.gravidade)">
+            </ion-icon>
+            <ion-label class="ion-text-wrap">
+              <h3>{{razao.icone}} {{razao.titulo}}</h3>
+              <p>{{modoAvancado ? razao.descricao_avancada : razao.descricao_simples}}</p>
+              <ion-badge [color]="getCorGravidade(razao.gravidade)" size="small">
+                {{razao.fonte}}
+              </ion-badge>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Card: Dados Extraídos -->
+    <ion-card *ngIf="dadosExtraidos">
+      <ion-card-header>
+        <ion-card-title>📄 Dados do Boleto</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngIf="dadosExtraidos.banco_nome">
+            <ion-label>
+              <p>Banco</p>
+              <h3>{{dadosExtraidos.banco_nome}} ({{dadosExtraidos.codigo_banco}})</h3>
+            </ion-label>
+          </ion-item>
+          
+          <ion-item *ngIf="dadosExtraidos.valor">
+            <ion-label>
+              <p>Valor</p>
+              <h3>{{formatarValor(dadosExtraidos.valor)}}</h3>
+            </ion-label>
+          </ion-item>
+          
+          <ion-item *ngIf="dadosExtraidos.vencimento">
+            <ion-label>
+              <p>Vencimento</p>
+              <h3>{{dadosExtraidos.vencimento}}</h3>
+            </ion-label>
+          </ion-item>
+          
+          <ion-item *ngIf="dadosExtraidos.beneficiario_cnpj">
+            <ion-label>
+              <p>CNPJ do Beneficiário</p>
+              <h3>{{dadosExtraidos.beneficiario_cnpj}}</h3>
+            </ion-label>
+          </ion-item>
+          
+          <ion-item *ngIf="dadosExtraidos.linha_digitavel">
+            <ion-label class="ion-text-wrap">
+              <p>Linha Digitável</p>
+              <h3 style="font-size: 0.9rem;">{{dadosExtraidos.linha_digitavel}}</h3>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Botão: Ver Detalhes Técnicos -->
+    <ion-button expand="block" fill="outline" (click)="toggleModoAvancado()" 
+                *ngIf="explicacaoAvancada">
+      <ion-icon [name]="modoAvancado ? 'chevron-up' : 'chevron-down'" slot="start"></ion-icon>
+      {{modoAvancado ? 'Ocultar' : 'Ver'}} Detalhes Técnicos
+    </ion-button>
+
+    <!-- Detalhes Técnicos (Modo Avançado) -->
+    <ion-card *ngIf="modoAvancado && explicacaoAvancada">
+      <ion-card-header>
+        <ion-card-title>🔬 Análise Técnica</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <pre>{{explicacaoAvancada | json}}</pre>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Botões de Ação -->
+    <div class="acoes-finais">
+      <ion-button expand="block" (click)="novaAnalise()" color="primary">
+        <ion-icon name="camera" slot="start"></ion-icon>
+        Analisar Outro Boleto
+      </ion-button>
+      
+      <ion-button expand="block" (click)="irParaHome()" fill="outline">
+        <ion-icon name="home" slot="start"></ion-icon>
+        Voltar para Home
+      </ion-button>
+    </div>
+
+  </div>
+
+  <!-- Erro: Nenhum resultado -->
+  <div *ngIf="!carregando && !explicacaoSimples" class="erro-container">
+    <ion-icon name="warning" color="warning" class="icone-erro"></ion-icon>
+    <h2>Nenhum resultado encontrado</h2>
+    <p>Não foi possível processar a análise do boleto.</p>
+    <ion-button (click)="irParaHome()">Voltar</ion-button>
+  </div>
+
+</ion-content>
