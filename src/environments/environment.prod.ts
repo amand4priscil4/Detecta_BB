@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://detectorboletos.onrender.com/api'
+  apiUrl: 'https://detectabb-backend-3.onrender.com'
 };
